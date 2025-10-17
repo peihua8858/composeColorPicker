@@ -91,61 +91,77 @@ afterEvaluate {
         }
     }
 }
-
-signing {
-    setRequired {
-        // signing is only required if the artifacts are to be published
-        gradle.taskGraph.allTasks.any { PublishToMavenRepository::class == it.javaClass }
-    }
-    sign(configurations.archives.get())
-    sign(publishing.publications)
-}
-publishing {
-
-    publications.withType(MavenPublication::class) {
-        groupId = "com.godaddy.android.colorpicker"
-        artifactId = "compose-color-picker"
-        version = "0.7.0"
-
-        artifact(tasks["javadocJar"])
-
-        pom {
-
-            name.set("compose-color-picker")
-            description.set("A compose component for picking a color")
-            url.set("https://github.com/godaddy/compose-color-picker")
-
-            licenses {
-                license {
-                    name.set("The MIT License (MIT)")
-                    url.set("https://opensource.org/licenses/MIT")
-                }
-            }
-            developers {
-                developer {
-                    id.set("godaddy")
-                    name.set("GoDaddy")
-                }
-            }
-            organization {
-                name.set("GoDaddy")
-            }
-            scm {
-                connection.set("scm:git:git://github.com/godaddy/compose-color-picker.git")
-                developerConnection.set("scm:git:ssh://git@github.com/godaddy/compose-color-picker.git")
-                url.set("https://github.com/godaddy/compose-color-picker")
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = sonatypeUsername
-                password = sonatypePassword
+group = "com.github.peihua8858"
+version = "1.0.0"
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.peihua8858"
+                artifactId = "compose-color-picker"
+                version = project.version.toString()
             }
         }
     }
 }
+apply(from = "new_push_maven.gradle")
+
+//signing {
+//    setRequired {
+//        // signing is only required if the artifacts are to be published
+//        gradle.taskGraph.allTasks.any { PublishToMavenRepository::class == it.javaClass }
+//    }
+//    sign(configurations.archives.get())
+//    sign(publishing.publications)
+//}
+//publishing {
+//
+//    publications.withType(MavenPublication::class) {
+//        groupId = "com.godaddy.android.colorpicker"
+//        artifactId = "compose-color-picker"
+//        version = "0.7.0"
+//
+//        artifact(tasks["javadocJar"])
+//
+//        pom {
+//
+//            name.set("compose-color-picker")
+//            description.set("A compose component for picking a color")
+//            url.set("https://github.com/godaddy/compose-color-picker")
+//
+//            licenses {
+//                license {
+//                    name.set("The MIT License (MIT)")
+//                    url.set("https://opensource.org/licenses/MIT")
+//                }
+//            }
+//            developers {
+//                developer {
+//                    id.set("godaddy")
+//                    name.set("GoDaddy")
+//                }
+//            }
+//            organization {
+//                name.set("GoDaddy")
+//            }
+//            scm {
+//                connection.set("scm:git:git://github.com/godaddy/compose-color-picker.git")
+//                developerConnection.set("scm:git:ssh://git@github.com/godaddy/compose-color-picker.git")
+//                url.set("https://github.com/godaddy/compose-color-picker")
+//            }
+//        }
+//    }
+//
+//    repositories {
+//        maven {
+//            setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+//            credentials {
+//                username = sonatypeUsername
+//                password = sonatypePassword
+//            }
+//        }
+//    }
+//}
 
